@@ -1,5 +1,8 @@
 # matcher-test-for-vale
 
+- [GitHub Actions Result](https://github.com/hituzi-no-sippo/matcher-test-for-vale/actions/runs/3974529244)
+- [Annotations](https://github.com/hituzi-no-sippo/matcher-test-for-vale/commit/09d205c2e6d2e48259950734eb18e70f86553be3#annotation_8155580982)
+
 ## Test text
 
 We need Ascidoctor to lint AsciiDoc files.
