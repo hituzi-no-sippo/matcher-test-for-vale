@@ -1,0 +1,44 @@
+---
+name: CI
+
+on:
+  push:
+    paths:
+      - README.md
+  pull_request:
+    paths:
+      - README.md
+
+jobs:
+  lint:
+    name: lint
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    env:
+      REPORT_FILE: report.txt
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install linter
+        uses: aquaproj/aqua-installer@v2.0.2
+        with:
+          aqua_version: v1.32.0
+          aqua_opts: "--tags vale"
+
+      - name: Download and install external configuration sources for linter
+        run: vale sync
+
+      - name: Run natural language texts
+        run: vale --no-wrap README.md > "${REPORT_FILE}"
+
+      - name: Add matcher
+        if: always()
+        run: echo "::add-matcher::.github/matchers/vale.json"
+
+      - name: Output for GitHub Annotations
+        if: always()
+        run: |
+          ansii_color_code_pattern="\x1b\[[0-9;]*m"
+          < "${REPORT_FILE}" sed --expression="s/${ansii_color_code_pattern}//g"
